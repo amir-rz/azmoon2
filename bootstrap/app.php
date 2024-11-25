@@ -110,6 +110,9 @@ $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
     require __DIR__.'/../routes/web.php';
+    require __DIR__.'/../routes/api/v1.php';
+    require __DIR__.'/../routes/api/v2.php';
+
 });
 
 return $app;
