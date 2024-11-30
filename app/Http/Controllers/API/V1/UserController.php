@@ -1,28 +1,39 @@
 <?php
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\Contracts\APIController;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UserController extends APIController
 {
     public function __construct(private UserRepositoryInterface $userRepository)
     {
         
     }
-    public function store()
+    public function store(Request $request)
     {
-        return response()->json(
-            [
-                'success' => true,
-                'message' => 'User has been created successfully',
-                'data' =>[
-                    'full_name' => 'amir rezaei',
-                    'email' => 'amirrezaei7545@gmail.com',
-                    'mobile' => '09220847545',
-                    'password' => '123456',
-                ],
-            ]
-            );
+        // Validate the incoming request
+        $this->validate($request , [
+            'full_name' =>'required|max:255',
+            'email' =>'required|email|max:255',
+            'mobile' =>'required|max:15',
+            'password' =>'required|',
+        ]);
+        // Create a new user
+        $this->userRepository->create([[
+                'full_name' => $request->full_name,
+                'email' => $request->email,
+                'mobile' => $request->mobile,
+                'password' => app('hash')->make($request->password),
+    
+        ]]);
+        return $this->respondCreated('کاربر با موفقیت ایجاد شد',[
+            'full_name' => $request->full_name,
+            'email' => $request->email,
+            'mobile' => $request->mobile,
+            'password' => $request->password,
+        ]);
+        
     }
 }
