@@ -21,13 +21,13 @@ class UserController extends APIController
             'password' =>'required|',
         ]);
         // Create a new user
-        $this->userRepository->create([[
+        $this->userRepository->create([
                 'full_name' => $request->full_name,
                 'email' => $request->email,
                 'mobile' => $request->mobile,
                 'password' => app('hash')->make($request->password),
     
-        ]]);
+        ]);
         return $this->respondCreated('کاربر با موفقیت ایجاد شد',[
             'full_name' => $request->full_name,
             'email' => $request->email,
@@ -35,5 +35,29 @@ class UserController extends APIController
             'password' => $request->password,
         ]);
         
+    }
+
+    public function updateInfo(Request $request)
+    {
+        $this->validate($request , [
+            'id' => 'required',
+            'full_name' =>'required|max:255',
+            'email' =>'required|email|max:255',
+            'mobile' =>'required|max:15',
+        ]);
+        #update user
+        $this->userRepository->update($request->id,[ 
+            'full_name' => $request->full_name,
+            'email' => $request->email,
+            'mobile' => $request->mobile,
+            'password' => app('hash')->make($request->password),
+
+    ]);
+    return $this->respondSuccess('کاربر با موفقیت ویرایش شد',[
+        'full_name' => $request->full_name,
+        'email' => $request->email,
+        'mobile' => $request->mobile,
+    ]);
+
     }
 }
