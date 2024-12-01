@@ -20,7 +20,11 @@ class EloquentBaseRepository implements RepositoryInterface
         return $this->model::where('id', $id)->update($data);;
 
     }
-    public function delete(array $where)
+    public function delete(int $id)
+    {
+        return $this->model::delete($id);
+    }
+    public function deleteBy(array $where)
     {
         $query = $this->model::query();
         foreach($where as $key => $value)

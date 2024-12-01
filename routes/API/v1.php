@@ -12,6 +12,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router){
         $router->post('/','API\V1\UserController@store');
         $router->put('/','API\V1\UserController@updateInfo');
         $router->put('change-password','API\V1\UserController@updatePassword');
+        $router->delete('/','API\V1\UserController@delete');
 
 
     });
