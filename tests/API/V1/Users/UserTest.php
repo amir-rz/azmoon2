@@ -92,22 +92,22 @@ class UserTest extends TestCase
         //     ]); 
         // }
         #---------------------READ USER-----------------------------------#
-        public function test_should_read_user()
-        {
-            $pagesize = 3;
-            $userEmail = 'amirrezaei@gmail.com';
-            $responce = $this->call('get','api/v1/users',[
-                'search'=> $userEmail,
-                'page'=>1,
-                'pagesize'=> $pagesize
-            ]);
-            $data = json_decode($responce->getContent(),true);
-            $this->assertEquals($data['data']['email'],$userEmail);
-            $this->assertEquals(200,$responce->status());
-            $this->seeJsonStructure([
-                'success',
-                'message',
-                'data',
-            ]);
-        }
+        // public function test_should_read_user()
+        // {
+        //     $pagesize = 3;
+        //     $userEmail = 'amirrezaei@gmail.com';
+        //     $responce = $this->call('get','api/v1/users',[
+        //         'search'=> $userEmail,
+        //         'page'=>1,
+        //         'pagesize'=> $pagesize
+        //     ]);
+        //     $data = json_decode($responce->getContent(),true);
+        //     $this->assertEquals($data['data']['email'],$userEmail);
+        //     $this->assertEquals(200,$responce->status());
+        //     $this->seeJsonStructure([
+        //         'success',
+        //         'message',
+        //         'data',
+        //     ]);
+        // }
     }

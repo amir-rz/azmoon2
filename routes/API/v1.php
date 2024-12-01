@@ -2,9 +2,10 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
+use App\Models\User;
 
-$router->get('api/v1', function () use ($router) {
-    return $router->app->version();
+$router->get('api', function (){
+    dd(User::create(['full_name' => 'amir',]));
 });
  
 $router->group(['prefix' => 'api/v1'], function () use ($router){

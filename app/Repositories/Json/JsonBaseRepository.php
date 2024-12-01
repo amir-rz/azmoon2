@@ -1,11 +1,13 @@
 <?php
 namespace App\Repositories\Json;
 
+use App\Entities\User\UserEntity;
+use App\Entities\User\UserJsonEntity;
 use App\Repositories\Contracts\RepositoryInterface;
 
 class JsonBaseRepository implements RepositoryInterface
 {
-    protected $repository = 'user.json';
+    protected $repository;
     public function create(array $data)
     {
         if(file_exists($this->repository))
@@ -21,11 +23,18 @@ class JsonBaseRepository implements RepositoryInterface
             array_push($users, $data);
             file_put_contents($this->repository,json_encode($users,JSON_PRETTY_PRINT)); 
         }
+        return $data;
 
     }
-    public function find(int $id,array $data)
+    public function find(int $id) 
     {
-
+        $users = json_decode(file_get_contents(base_path('/').$this->repository),true);
+        foreach ($users as $user)
+        {
+            if($user['id'] == $id)
+                return $user;
+            return [];
+        }
     }
     public function update(int $id, array $data)
     {

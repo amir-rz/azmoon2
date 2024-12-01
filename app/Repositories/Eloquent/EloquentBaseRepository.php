@@ -11,7 +11,7 @@ class EloquentBaseRepository implements RepositoryInterface
     {
         return $this->model::create($data);
     }
-    public function find(int $id , array $data)
+    public function find(int $id)
     {
         return $this->model::find( $id);
     }
