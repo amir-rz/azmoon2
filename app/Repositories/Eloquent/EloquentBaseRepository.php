@@ -42,4 +42,7 @@ class EloquentBaseRepository implements RepositoryInterface
         }
         return $query->get();
     }  
+    public function paginate(string $search = null,int $page,int $pagesize = 20)
+    {
+    }
 }

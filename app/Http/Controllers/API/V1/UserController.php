@@ -57,7 +57,7 @@ class UserController extends APIController
         'full_name' => $request->full_name,
         'email' => $request->email,
         'mobile' => $request->mobile,
-    ]);
+        ]);
     }
 
     public function updatePassword(Request $request)
@@ -83,6 +83,16 @@ class UserController extends APIController
         ]);
         $this->userRepository->delete($request->id);
         return $this->respondSuccess('کاربر با موفقیت حذف شد',[]);
+    }
+    public function index(Request $request)
+    {
+        $this->validate($request,[
+            'search'=> 'nullable|string',
+            'page'=>'required|numeric',
+            'pagesize'=>'nullable|numeric',
+        ]);
+        $users = $this->userRepository->paginate($request->search, $request->page, $request->pagesize??20);
+        return $this->respondSuccess('کاربران', $users);
     }
     
 }
