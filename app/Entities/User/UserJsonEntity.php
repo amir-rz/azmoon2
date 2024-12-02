@@ -16,12 +16,12 @@ class UserJsonEntity implements UserEntity
         return $this->user['email'];
 
     }
-    public function getMobile():int
+    public function getMobile():string
     {
         return $this->user['mobile'];
 
     }
-    public function getPassword():int
+    public function getPassword():string
     {
        return $this->user['password'];
         

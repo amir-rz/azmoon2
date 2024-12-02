@@ -67,13 +67,14 @@ class UserController extends APIController
             'password'=>'required|required_with:password_repeat|same:password_repeat',
             'password_repeat'=>'required',
         ]);
-        $this->userRepository->update($request->id,[
+        $user = $this->userRepository->update($request->id,[
             'password' => app('hash')->make($request->password),
         ]);
+        
         return $this->respondSuccess('Password updated successfully',[
-            'full_name' => $request->full_name,
-            'email' => $request->email,
-            'mobile' => $request->mobile,
+            'full_name' => $user->getFullName(),
+            'email' => $user->getEmail(),
+            'mobile' => $user->getMobile(),
         ]);
     }
     public function delete(Request $request)
@@ -81,9 +82,10 @@ class UserController extends APIController
         $this->validate($request,[
             'id'=>'required',
         ]);
-        $this->userRepository->delete($request->id);
-        // $user = $this->userRepository->find($request->id);
-        // dd($user->getId());
+        if(!$this->userRepository->find($request->id))
+            return $this->respondNotFount('کاربر یافت نشد');
+        if(!$this->userRepository->delete($request->id))
+            $this->respondInternalError('خظایی رخ داده است');
         return $this->respondSuccess('کاربر با موفقیت حذف شد',[]);
     }
     public function index(Request $request)

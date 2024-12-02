@@ -21,6 +21,11 @@ class APIController extends Controller
     {
         return $this->setStatusCode(404)->respond($message, false);
     }
+    public function respondInternalError(string $message)
+    {
+        return $this->setStatusCode(500)->respond($message, false);
+
+    }
     private function respond(string $message,bool $isSuccess, array $data=null)
     {
         $responceData = [

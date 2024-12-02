@@ -25,10 +25,8 @@ class EloquentUserRepository extends EloquentBaseRepository implements UserRepos
     }
     public function update(int $id, array $data):UserEntity
     {
-        $user = parent::update($id, $data);
-        if($user){
-            return new UserEloquentEntity($user);
-        }
-        return null;
+        if(!parent::update($id, $data))
+            return new UserEloquentEntity(null);
+        return new UserEloquentEntity(parent::find($id));
     }
 }

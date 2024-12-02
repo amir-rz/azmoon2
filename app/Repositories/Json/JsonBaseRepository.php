@@ -58,7 +58,7 @@ class JsonBaseRepository implements RepositoryInterface
           }
         }
     }
-    public function delete(int $id)
+    public function delete(int $id):bool
     {   
         $users = json_decode( file_get_contents ($this->repository),true );
         foreach ($users as $key => $user) {
@@ -69,9 +69,10 @@ class JsonBaseRepository implements RepositoryInterface
             unlink($this->repository); 
           } 
           file_put_contents($this->repository,json_encode($users,JSON_PRETTY_PRINT));
-          break;
+          return true;
 
         }
+        return false;
     }
     public function paginate(string $search = null,int $page,int $pagesize = 20)
     {

@@ -1,5 +1,5 @@
 <?php
-namespace API\V1\Users;
+namespace tests\API\V1\Users;
 
 use Tests\TestCase;
 
