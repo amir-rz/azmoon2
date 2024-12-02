@@ -15,4 +15,5 @@ class EloquentCategoryRepository extends EloquentBaseRepository implements Categ
         $createdCategoty= parent::create($data);
         return new CategoryEloquentEntity($createdCategoty);
     }
+  
 }

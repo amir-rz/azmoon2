@@ -28,4 +28,18 @@ class CategoriesController extends APIController
             'slug'=>$createdCategory->getSlug(),
         ]);
     }
+
+    public function delete(Request $request)
+    {
+        $this->validate($request,[
+            'id' =>'required|integer',
+        ]);
+        $deletedCategory = $this->categoryRepository->delete($request->id);
+        if(!$this->categoryRepository->find($request->id))
+            return $this->respondNotFount('دسته بندی با این ایدی یافت نشد ');
+        if($deletedCategory){
+            return $this->respondSuccess('دسته بندی با موفقیت حذف شد',[]);
+        }
+        return $this->respondNotFount('دسته بندی یافت نشد');
+    }
 }
