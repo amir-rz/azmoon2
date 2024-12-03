@@ -3,6 +3,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\API\Contracts\APIController;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
+use Exception;
 use Illuminate\Http\Request;
 
 class CategoriesController extends APIController
@@ -41,5 +42,26 @@ class CategoriesController extends APIController
             return $this->respondSuccess('دسته بندی با موفقیت حذف شد',[]);
         }
         return $this->respondNotFount('دسته بندی یافت نشد');
+    }
+
+    public function update(Request $request)
+    {
+        $this->validate($request,[
+            'id' =>'required|integer',
+            'name' =>'required|string',
+           'slug' =>'required|string',
+        ]);
+        try{
+        $updateCategory = $this->categoryRepository->update($request->id,[
+            'name' => $request->name,
+           'slug' => $request->slug,
+        ]); 
+        }catch(Exception $e){
+            return $this->respondInternalError('دسته بندی بروزرسانی نشد');
+        }       
+        return $this->respondSuccess('کتگوری با موفقیت اپدیت شد',[
+            'name'=>$updateCategory->getName(),
+            'slug'=>$updateCategory->getSlug(),
+        ]);
     }
 }
