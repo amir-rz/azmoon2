@@ -51,6 +51,6 @@ class EloquentBaseRepository implements RepositoryInterface
         {
             $query->orWhere($value);
         }
-            return $this->model::paginate($pagesize,$columns, null, $page)->toArray()['data'];
+            return $query->paginate($pagesize,$columns, null, $page)->toArray()['data'];
     }
 }

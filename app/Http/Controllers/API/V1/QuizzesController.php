@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\API\Contracts\APIController;
 use App\Repositories\Contracts\QuizzRepositoryInterface;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 
 class QuizzesController extends APIController
@@ -52,5 +53,51 @@ class QuizzesController extends APIController
         if(!$this->quizRepository->delete($request->id))
             $this->respondInternalError('خطایی رخ داده است');
         return $this->respondSuccess('ازمون با موفقیت حذف شد',[]);
+    }
+
+    public function index(Request $request)
+    {
+        $this->validate($request,[
+            'search' =>'nullable|string',
+            'page'=> 'required|integer',
+            'pagesiz'=>'nullable|integer',
+        ]);
+        $quizzes = $this->quizRepository->paginate($request->search, $request->page, $request->pagesiz??10,['title','description']);
+        dd($quizzes );
+        return $this->respondSuccess('ازمون ها',$quizzes);
+    }
+
+    public function update(Request $request)
+    {
+        $startDate = Carbon::parse($request->start_date);
+
+        $this->validate($request,[
+            'id'=>'required|numeric',
+           // 'category_id'=>'|string',
+            'title'=>'required|string',
+            'description'=>'required|string',
+           'start_date'=>'date|required',
+           'duration'=>'date|required',
+        ]);
+
+        try{
+        $updatedQuiz = $this->quizRepository->update($request->id,[
+            //'category_id'=> 5,
+            'title'=> $request->title,
+            'description'=> $request->description,
+           'start_date'=> $startDate->format('Y-m-d'),  
+           'duration'=> $request->duration,
+        ]);
+         }catch(Exception $e)
+         {
+            return $this->respondInternalError('sddf');
+         }
+        return $this->respondSuccess('ازمون با موفقیت به روزرسانی شد',[
+            //'categery_id'=>$updatedQuiz->getCategoryId(),
+            'title'=>$updatedQuiz->getTitle(),
+            'description'=>$updatedQuiz->getDescription(),
+            'start_date'=>$updatedQuiz->getStartDate(),
+            'duration'=>Carbon::parse($updatedQuiz->getDuration()),
+        ]);
     }
 }

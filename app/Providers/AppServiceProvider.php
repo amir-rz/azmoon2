@@ -20,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+
         return $this->app->bind(QuizzRepositoryInterface::class,EloquentQuizzRepository::class);
 
 
@@ -29,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
         return $this->app->bind(UserRepositoryInterface::class,EloquentUserRepository::class);
         return $this->app->bind(CategoryRepositoryInterface::class,EloquentCategoryRepository::class);
+        return $this->app->bind(QuizzRepositoryInterface::class,EloquentQuizzRepository::class);
 
     }
 }

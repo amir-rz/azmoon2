@@ -87,7 +87,7 @@ class UserController extends APIController
         if(!$this->userRepository->delete($request->id))
             $this->respondInternalError('خظایی رخ داده است');
         return $this->respondSuccess('کاربر با موفقیت حذف شد',[]);
-    }
+    }   
     public function index(Request $request)
     {
         $this->validate($request,[
