@@ -42,13 +42,15 @@ class EloquentBaseRepository implements RepositoryInterface
         }
         return $query->get();
     }  
-    public function paginate(string $search = null,int $page,int $pagesize = 20)
+    public function paginate(string $search = null,int $page,int $pagesize = 20,array $columns =[])
     {
         if(is_null($search))
-            return $this->model::paginate($pagesize, ['full_name','mobile','email'], null, $page)->toArray()['data'];
-        return $this->model::orWhere('full_name',$search)
-        ->orWhere('mobile',$search)
-        ->orWhere('email',$search)
-        ->paginate($pagesize, ['full_name','mobile','email'], null, $page)->toArray()['data'];
+            return $this->model::paginate($pagesize,$columns, null, $page)->toArray()['data'];
+        $query = $this->model::query();
+            foreach ($columns as $value)
+        {
+            $query->orWhere($value);
+        }
+            return $this->model::paginate($pagesize,$columns, null, $page)->toArray()['data'];
     }
 }
