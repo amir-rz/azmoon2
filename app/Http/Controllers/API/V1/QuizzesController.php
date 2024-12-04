@@ -20,7 +20,7 @@ class QuizzesController extends APIController
             'category_id'=>'required|string',
             'title'=>'required|string',
             'description'=>'required|string',
-            'start_date'=>'date',
+            'start_date'=>'required|date',
             'duration'=>'required|date',
         ]);
         $startDate = Carbon::parse($request->start_date);

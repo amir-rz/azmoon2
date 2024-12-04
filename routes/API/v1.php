@@ -28,9 +28,10 @@ $router->group(['prefix' => 'api/v1'], function () use ($router){
         $router->delete('/','API\V1\QuizzesController@delete');
         $router->get('/','API\V1\QuizzesController@index');
         $router->put('/','API\V1\QuizzesController@update');
-
-
-
+    });
+    $router->group(['prefix' => 'questions'], function () use ($router){
+        $router->post('/','API\V1\QuestionController@store');
+        $router->delete('/','API\V1\QuestionController@delete');
 
     });
 });
