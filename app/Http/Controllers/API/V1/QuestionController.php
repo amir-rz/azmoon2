@@ -61,4 +61,15 @@ class QuestionController extends APIController
         }
         return $this->respondInternalError('خطا در عملیان');
     }
+
+    public function index(Request $request)
+    {
+        $this->validate($request,[
+            'search' =>'nullable|string',
+            'page'=>'required|numeric',
+            'pagesize'=>'nullable|numeric',
+        ]);
+        $questions = $this->questionRepository->paginate($request->search, $request->page, $request->pagesize??20,['title','is_active','quiz_id','score']); 
+        return $this->respondSuccess('سوالات', $questions);
+    }
 }

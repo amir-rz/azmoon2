@@ -49,7 +49,7 @@ class EloquentBaseRepository implements RepositoryInterface
         $query = $this->model::query();
             foreach ($columns as $value)
         {
-            $query->orWhere($value);
+            $query->orWhere($value,$search);
         }
             return $query->paginate($pagesize,$columns, null, $page)->toArray()['data'];
     }
