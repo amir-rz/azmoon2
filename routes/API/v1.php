@@ -33,7 +33,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router){
         $router->post('/','API\V1\QuestionController@store');
         $router->delete('/','API\V1\QuestionController@delete');
         $router->get('/','API\V1\QuestionController@index');
-
+        $router->put('/','API\V1\QuestionController@update');
 
     });
 });

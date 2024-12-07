@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\API\Contracts\APIController;
 use App\Repositories\Contracts\QuestionRepositoryInterface;
 use App\Repositories\Contracts\QuizzRepositoryInterface;
+use Exception;
 use Illuminate\Http\Request;
 
 class QuestionController extends APIController
@@ -71,5 +72,39 @@ class QuestionController extends APIController
         ]);
         $questions = $this->questionRepository->paginate($request->search, $request->page, $request->pagesize??20,['title','is_active','quiz_id','score']); 
         return $this->respondSuccess('سوالات', $questions);
+    }
+
+    public function update(Request $request)
+    {
+        $this->validate($request,[
+            'id'=>'required|numeric',
+            'title' => 'required|string',
+            'is_active'=>'required|numeric',
+            //'quiz_id' => 'required|numeric',
+            'option' => 'required|json',
+           'score' => 'required|numeric',
+        ]);
+        if(!$this->questionRepository->find($request->id))
+            return $this->respondNotFount('Not Found');
+
+        try{
+        $question = $this->questionRepository->update($request->id,[
+            'title' => $request->title,
+            'is_active'=>$request->is_active,
+            //'quiz_id' => $request->quiz_id,
+            'option' => $request->option,
+           'score' => $request->score,
+        ]);
+        }catch(Exception $e){
+            return $this->respondInternalError($e->getMessage());
+        }
+        return $this->respondSuccess('سوال با موفقیت ویرایش شد',[
+            'title' => $question->getTitle(),
+            'option' => $question->getOption(),
+            'is_active' => $question->getIsActive(),
+           // 'quiz_id' => $question->getQuizId(),
+            'id' => $question->getId(),
+           'score' => json_encode($question->getScore()),
+        ]);
     }
 }
